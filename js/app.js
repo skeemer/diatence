@@ -1,5 +1,18 @@
 var app = angular.module('app', ['contenteditable','templateLoader']);
 
+app.directive('ngRtclick', function($parse) {
+  return function(scope, element, attrs) {
+    var fn = $parse(attrs.ngRtclick);
+    element.bind('contextmenu', function(event) {
+      scope.$apply(function() {
+        event.preventDefault();
+        event.stopPropagation();
+        fn(scope, {$event:event});
+      });
+    });
+  };
+});
+
 app.directive('diagram', function () {
   var render = function (scope, iElement, iAttrs) {
 //    console.log('sentences');
@@ -71,12 +84,34 @@ app.directive('predicate', function () {
 
 app.directive('object', function () {
   var render = function (scope, iElement, iAttrs) {
+    scope.dropdown = false;
+    scope.editable = false;
+
     scope.$watch('object.text', function () {
       var text = scope.object.text.length;
       var modifiers = scope.object.modifiers.length;
       var padding = (2 > (4+modifiers*4-text)/2) ? 2 : (4+modifiers*4-text)/2;
       scope.style = 'padding: 0 ' + padding + 'em;';
     });
+    scope.$watch('object.modifiers.length', function () {
+      console.log('recompute');
+      var text = scope.object.text.length;
+      var modifiers = scope.object.modifiers.length;
+      var padding = (2 > (4+modifiers*4-text)/2) ? 2 : (4+modifiers*4-text)/2;
+      scope.style = 'padding: 0 ' + padding + 'em;';
+    });
+    scope.addModifier = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      scope.object.modifiers.push({text: 'modifier'});
+      scope.dropdown = false;
+      console.log(scope);
+    }
+    scope.closeDropdown = function () {
+      scope.$apply(function() {
+        scope.dropdown = false;
+      })
+    }
   };
 
   return {
@@ -90,8 +125,6 @@ app.directive('object', function () {
 
 app.directive('modifier', function () {
   var render = function (scope, iElement, iAttrs) {
-    //    console.log('object');
-    console.log(scope.$parent.$index);
     scope.style = "left: " + (3 + scope.$parent.$index*3) + 'em;';
   };
 
@@ -102,4 +135,12 @@ app.directive('modifier', function () {
       modifier: '='
     }
   };
+});
+
+
+// Close all dropdown menus
+$(function() {
+  $('body').click(function () {
+    $('.dropdown-menu').scope().closeDropdown();
+  });
 });

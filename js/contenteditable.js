@@ -1,8 +1,9 @@
 // Original code: https://github.com/angular/angular.js/issues/528#issuecomment-7573166
 // Added keydown bindings
+// Added editing on dblclick only
 
 angular.module('contenteditable', []).
-    directive('contenteditable', function() {
+    directive('editable', function() {
       return {
         restrict: 'A',
         require: '?ngModel',
@@ -14,7 +15,12 @@ angular.module('contenteditable', []).
           ngModel.$render = function() {
             return element.html(ngModel.$viewValue);
           };
+          element.dblclick(function (e) {
+            element.attr('contenteditable', true);
+            element.focus();
+          });
           element.bind('blur', function () {
+            element.attr('contenteditable', false);
             if (ngModel.$viewValue !== $.trim(element.html())) {
               return scope.$apply(read);
             }

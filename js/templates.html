@@ -22,11 +22,11 @@
 </script>
 
 <script type="text/ng-template"  id="subject.html">
-  <text contenteditable ng-model="subject.text"></text>
+  <text editable ng-model="subject.text"></text>
 </script>
 
 <script type="text/ng-template"  id="predicate.html">
-  <text contenteditable ng-model="predicate.text"></text>
+  <text editable ng-model="predicate.text"></text>
   <div class="verb" type="{{ predicate.verb }}" ng-click="toggleVerb()">&nbsp;</div>
   <objects>
     <object ng-repeat="object in predicate.objects" object="object" ng-include="'object.html'"></object>
@@ -34,7 +34,10 @@
 </script>
 
 <script type="text/ng-template"  id="object.html">
-  <text contenteditable ng-model="object.text" style={{style}}></text>
+  <text editable ng-model="object.text" style={{style}} ng-rtclick="$parent.dropdown = true"></text>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" ng-show="dropdown">
+    <li><a tabindex="-1" href="#" ng-click="addModifier($event)">Add modifier</a></li>
+  </ul>
   <modifiers ng-if="object.modifiers">
     <modifier ng-repeat="modifier in object.modifiers" modifier="modifier" ng-include="'modifier.html'"></modifier>
   </modifiers>
@@ -42,7 +45,7 @@
 
 
 <script type="text/ng-template"  id="modifier.html">
-  <text contenteditable ng-model="modifier.text" style="{{style}}"></text>
+  <text editable ng-model="modifier.text" style="{{style}}"></text>
   <modifiers ng-if="modifier.modifiers">
     <modifier ng-repeat="modifier in modifier.modifiers" modifier="modifier" ng-include="'modifier.html'"></modifier>
   </modifiers>
