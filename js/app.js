@@ -71,8 +71,12 @@ app.directive('predicate', function () {
 
 app.directive('object', function () {
   var render = function (scope, iElement, iAttrs) {
-    //    console.log('object');
-    //    console.log(scope.object);
+    scope.$watch('object.text', function () {
+      var text = scope.object.text.length;
+      var modifiers = scope.object.modifiers.length;
+      var padding = (2 > (4+modifiers*4-text)/2) ? 2 : (4+modifiers*4-text)/2;
+      scope.style = 'padding: 0 ' + padding + 'em;';
+    });
   };
 
   return {
@@ -87,7 +91,8 @@ app.directive('object', function () {
 app.directive('modifier', function () {
   var render = function (scope, iElement, iAttrs) {
     //    console.log('object');
-    //    console.log(scope.object);
+    console.log(scope.$parent.$index);
+    scope.style = "left: " + (3 + scope.$parent.$index*3) + 'em;';
   };
 
   return {

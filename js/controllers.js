@@ -18,6 +18,12 @@ app.controller('DiatenceCtrl', function ($scope) {
                 modifiers: [
                   {
                     text: "a"
+                  },
+                  {
+                    text: "crazy"
+                  },
+                  {
+                    text: "sleepy"
                   }
                 ]
               }

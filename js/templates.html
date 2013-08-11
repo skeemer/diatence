@@ -34,7 +34,7 @@
 </script>
 
 <script type="text/ng-template"  id="object.html">
-  <text contenteditable ng-model="object.text"></text>
+  <text contenteditable ng-model="object.text" style={{style}}></text>
   <modifiers ng-if="object.modifiers">
     <modifier ng-repeat="modifier in object.modifiers" modifier="modifier" ng-include="'modifier.html'"></modifier>
   </modifiers>
@@ -42,7 +42,7 @@
 
 
 <script type="text/ng-template"  id="modifier.html">
-  <text contenteditable ng-model="modifier.text"></text>
+  <text contenteditable ng-model="modifier.text" style="{{style}}"></text>
   <modifiers ng-if="modifier.modifiers">
     <modifier ng-repeat="modifier in modifier.modifiers" modifier="modifier" ng-include="'modifier.html'"></modifier>
   </modifiers>
