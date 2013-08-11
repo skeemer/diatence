@@ -34,9 +34,11 @@
 </script>
 
 <script type="text/ng-template"  id="object.html">
-  <text editable ng-model="object.text" style={{style}} ng-rtclick="$parent.dropdown = true"></text>
+  <text editable ng-model="object.text" style={{style}} ng-snglclick="openDropdown($event)"></text>
   <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" ng-show="dropdown">
     <li><a tabindex="-1" href="#" ng-click="addModifier($event)">Add modifier</a></li>
+    <li class="divider"></li>
+    <li><a tabindex="-1" href="#" ng-click="editText($event)">Edit text (Dbl click)</a></li>
   </ul>
   <modifiers ng-if="object.modifiers">
     <modifier ng-repeat="modifier in object.modifiers" modifier="modifier" ng-include="'modifier.html'"></modifier>

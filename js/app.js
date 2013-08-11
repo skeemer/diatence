@@ -13,6 +13,32 @@ app.directive('ngRtclick', function($parse) {
   };
 });
 
+app.directive('ngSnglclick', function($parse) {
+  return function(scope, element, attrs) {
+    var fn = $parse(attrs.ngSnglclick);
+    var clicks = 0;
+    var event = null;
+    var runner = function () {
+      if(clicks == 1) {
+        scope.$apply(function() {
+          event.preventDefault();
+          event.stopPropagation();
+          fn(scope, {$event:event});
+        });
+      }
+      clicks = 0;
+    }
+    element.bind('click', function(e) {
+      clicks++;
+      if(clicks == 1) {
+        event = e;
+        setTimeout(runner, 300);
+      }
+    });
+  };
+});
+
+
 app.directive('diagram', function () {
   var render = function (scope, iElement, iAttrs) {
 //    console.log('sentences');
@@ -105,12 +131,22 @@ app.directive('object', function () {
       e.stopPropagation();
       scope.object.modifiers.push({text: 'modifier'});
       scope.dropdown = false;
-      console.log(scope);
+    }
+    scope.openDropdown = function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+      scope.dropdown = true;
     }
     scope.closeDropdown = function () {
       scope.$apply(function() {
         scope.dropdown = false;
       })
+    }
+    scope.editText = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      iElement.find('text').eq(0).attr('contenteditable', true).focus();
+      scope.dropdown = false;
     }
   };
 
