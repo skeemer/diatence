@@ -87,18 +87,18 @@ app.directive('object', function () {
     scope.dropdown = false;
     scope.editable = false;
 
-    scope.$watch('object.text', function () {
-      var text = scope.object.text.length;
+    function calculatePadding() {
+      var text = scope.object.text.length * 0.6;
       var modifiers = scope.object.modifiers.length;
-      var padding = (2 > (4+modifiers*4-text)/2) ? 2 : (4+modifiers*4-text)/2;
-      scope.style = 'padding: 0 ' + padding + 'em;';
+      var padding = (2 > (3+modifiers*3-text)/2) ? 2 : (3+modifiers*3-text)/2;
+      return 'padding: 0 ' + padding + 'em;';
+    }
+
+    scope.$watch('object.text', function () {
+      scope.style = calculatePadding();
     });
     scope.$watch('object.modifiers.length', function () {
-      console.log('recompute');
-      var text = scope.object.text.length;
-      var modifiers = scope.object.modifiers.length;
-      var padding = (2 > (4+modifiers*4-text)/2) ? 2 : (4+modifiers*4-text)/2;
-      scope.style = 'padding: 0 ' + padding + 'em;';
+      scope.style = calculatePadding();
     });
     scope.addModifier = function (e) {
       e.preventDefault();
@@ -136,7 +136,6 @@ app.directive('modifier', function () {
     }
   };
 });
-
 
 // Close all dropdown menus
 $(function() {
