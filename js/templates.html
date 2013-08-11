@@ -1,0 +1,49 @@
+<script type="text/ng-template"  id="tree_item_renderer.html">
+    {{data.name}}
+    <button ng-click="add(data)">Add node</button>
+    <button ng-click="delete(data)" ng-show="data.nodes.length > 0">Delete nodes</button>
+    <ul>
+        <li ng-repeat="data in data.nodes" ng-include="'tree_item_renderer.html'"></li>
+    </ul>
+</script>
+
+<script type="text/ng-template"  id="sentences.html">
+  <sentence ng-repeat="sentence in sentences" sentence="sentence" ng-include="'sentence.html'"></sentence>
+</script>
+
+<script type="text/ng-template"  id="sentence.html">
+  <subjects>
+    <subject ng-repeat="subject in sentence.subjects" subject="subject" ng-include="'subject.html'"></subject>
+  </subjects>
+  <break></break>
+  <predicates>
+    <predicate ng-repeat="predicate in sentence.predicates" predicate="predicate" ng-include="'predicate.html'"></predicate>
+  </predicates>
+</script>
+
+<script type="text/ng-template"  id="subject.html">
+  <text contenteditable ng-model="subject.text"></text>
+</script>
+
+<script type="text/ng-template"  id="predicate.html">
+  <text contenteditable ng-model="predicate.text"></text>
+  <div class="verb" type="{{ predicate.verb }}" ng-click="toggleVerb()">&nbsp;</div>
+  <objects>
+    <object ng-repeat="object in predicate.objects" object="object" ng-include="'object.html'"></object>
+  </objects>
+</script>
+
+<script type="text/ng-template"  id="object.html">
+  <text contenteditable ng-model="object.text"></text>
+  <modifiers ng-if="object.modifiers">
+    <modifier ng-repeat="modifier in object.modifiers" modifier="modifier" ng-include="'modifier.html'"></modifier>
+  </modifiers>
+</script>
+
+
+<script type="text/ng-template"  id="modifier.html">
+  <text contenteditable ng-model="modifier.text"></text>
+  <modifiers ng-if="modifier.modifiers">
+    <modifier ng-repeat="modifier in modifier.modifiers" modifier="modifier" ng-include="'modifier.html'"></modifier>
+  </modifiers>
+</script>

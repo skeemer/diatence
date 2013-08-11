@@ -54,10 +54,15 @@ body {
 diagram {
   font-family: courier;
 
+  /* Kill white space */
+  font-size: 0;
+  @fontsize: 1.75rem;
+
   text {
     display: inline-block;
     padding: 0 2em;
     border-bottom: 2px solid black;
+    font-size: @fontsize;
 
     &:hover {
       color: blue;
@@ -70,11 +75,12 @@ diagram {
     margin-left: -2px;
     border-left: 2px solid black;
     width: 0;
+    font-size: @fontsize;
 
     &[type="linking"] {
       -webkit-transform: rotate(-45deg);
       height: 2em;
-      bottom: 3px;
+      bottom: 0.25em;
     }
 
     &:hover {
@@ -89,5 +95,20 @@ diagram {
     height: 3.25em;
     bottom: -2em;
     border-left: 2px solid black;
+    font-size: @fontsize;
   }
+
+  subject, object {
+    position: relative;
+  }
+
+  modifier>text {
+    -webkit-transform: rotate(45deg);
+    -webkit-transform-origin: 0% 0%;
+    position: absolute;
+    left: 3em;
+    bottom: -0.9em;
+  }
+
+
 }

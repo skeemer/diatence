@@ -1,5 +1,5 @@
 app.controller('DiatenceCtrl', function ($scope) {
-  $scope.sentence = "Dan is human";
+  $scope.sentence = "Dan is a human";
   $scope.diagram = {
     sentences: [
       {
@@ -14,7 +14,12 @@ app.controller('DiatenceCtrl', function ($scope) {
             verb: "linking",
             objects: [
               {
-                text: "human"
+                text: "human",
+                modifiers: [
+                  {
+                    text: "a"
+                  }
+                ]
               }
             ]
           }

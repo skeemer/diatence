@@ -1,4 +1,4 @@
-var app = angular.module('app', ['contenteditable']);
+var app = angular.module('app', ['contenteditable','templateLoader']);
 
 app.directive('diagram', function () {
   var render = function (scope, iElement, iAttrs) {
@@ -6,7 +6,7 @@ app.directive('diagram', function () {
 //    console.log(scope.sentences);
   };
 
-  var template = '<sentences><sentence ng-repeat="sentence in sentences" sentence="sentence"></sentence></sentences>';
+  var template = '<sentences ng-include="\'sentences.html\'"></sentences>';
 
   return {
     restrict: 'E',
@@ -25,19 +25,9 @@ app.directive('sentence', function () {
 //    console.log(scope.sentence);
   };
 
-  var template = '' +
-      '<subjects>' +
-      '<subject ng-repeat="subject in sentence.subjects" subject="subject"></subject>' +
-      '</subjects>' +
-      '<break></break>' +
-      '<predicates>' +
-      '<predicate ng-repeat="predicate in sentence.predicates" predicate="predicate"></predicate>' +
-      '</predicates>';
-
   return {
     restrict: 'E',
     link: render,
-    template: template,
     scope: {
       sentence: '='
     }
@@ -50,12 +40,9 @@ app.directive('subject', function () {
 //    console.log(scope.subject);
   };
 
-  var template = '<text contenteditable ng-model="subject.text"></text>';
-
   return {
     restrict: 'E',
     link: render,
-    template: template,
     scope: {
       subject: '='
     }
@@ -73,17 +60,9 @@ app.directive('predicate', function () {
     };
   };
 
-  var template = '' +
-      '<text contenteditable ng-model="predicate.text"></text>' +
-      '<div class="verb" type="{{ predicate.verb }}" ng-click="toggleVerb()">&nbsp;</div>' +
-      '<objects>' +
-      '<object ng-repeat="object in predicate.objects" object="object"></object>' +
-      '</objects>';
-
   return {
     restrict: 'E',
     link: render,
-    template: template,
     scope: {
       predicate: '='
     }
@@ -92,18 +71,30 @@ app.directive('predicate', function () {
 
 app.directive('object', function () {
   var render = function (scope, iElement, iAttrs) {
-//    console.log('object');
-//    console.log(scope.object);
+    //    console.log('object');
+    //    console.log(scope.object);
   };
-
-  var template = '<text contenteditable ng-model="object.text"></text>';
 
   return {
     restrict: 'E',
     link: render,
-    template: template,
     scope: {
       object: '='
+    }
+  };
+});
+
+app.directive('modifier', function () {
+  var render = function (scope, iElement, iAttrs) {
+    //    console.log('object');
+    //    console.log(scope.object);
+  };
+
+  return {
+    restrict: 'E',
+    link: render,
+    scope: {
+      modifier: '='
     }
   };
 });
