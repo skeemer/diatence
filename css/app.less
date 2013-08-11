@@ -99,7 +99,7 @@ diagram {
     font-size: @fontsize;
   }
 
-  subject, object {
+  subject, predicate, object {
     position: relative;
   }
 
@@ -109,6 +109,14 @@ diagram {
     position: absolute;
     left: 3em;
     bottom: -0.9em;
+  }
+
+  modifier>modifiers {
+    display: none;
+  }
+
+  subject+subject {
+    display: none;
   }
 
 

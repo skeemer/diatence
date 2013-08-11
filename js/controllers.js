@@ -34,9 +34,9 @@ app.controller('DiatenceCtrl', function ($scope) {
     ]
   }
 
-  $scope.sentence2 = "Big, strong Dan, Mark and very dense Dave quickly left Amy in the car.";
+  $scope.sentence = "Big, strong Dan, Mark and very dense Dave quickly left a tired Amy in the car.";
 
-  $scope.diagram2 = {
+  $scope.diagram = {
     sentences: [
       {
         subjects: [
@@ -80,6 +80,14 @@ app.controller('DiatenceCtrl', function ($scope) {
             objects: [
               {
                 text: "Amy",
+                modifiers: [
+                  {
+                    text: "a"
+                  },
+                  {
+                    text: "tired"
+                  }
+                ],
                 phrases: [
                   {
                     text: "in",

@@ -1,5 +1,13 @@
 var app = angular.module('app', ['contenteditable','templateLoader']);
 
+function calculatePadding(text, modifiers) {
+  var tl = text.length * 0.6;
+  var ml = (modifiers !== undefined) ? modifiers.length : 0;
+  var padding = (2 > (3+ml*3-tl)/2) ? 2 : (3+ml*3-tl)/2;
+  return 'padding: 0 ' + padding + 'em;';
+}
+
+
 app.directive('ngRtclick', function($parse) {
   return function(scope, element, attrs) {
     var fn = $parse(attrs.ngRtclick);
@@ -66,10 +74,7 @@ app.directive('sentence', function () {
 
   return {
     restrict: 'E',
-    link: render,
-    scope: {
-      sentence: '='
-    }
+    link: render
   };
 });
 
@@ -81,10 +86,7 @@ app.directive('subject', function () {
 
   return {
     restrict: 'E',
-    link: render,
-    scope: {
-      subject: '='
-    }
+    link: render
   };
 });
 
@@ -101,61 +103,17 @@ app.directive('predicate', function () {
 
   return {
     restrict: 'E',
-    link: render,
-    scope: {
-      predicate: '='
-    }
+    link: render
   };
 });
 
 app.directive('object', function () {
   var render = function (scope, iElement, iAttrs) {
-    scope.dropdown = false;
-    scope.editable = false;
-
-    function calculatePadding() {
-      var text = scope.object.text.length * 0.6;
-      var modifiers = scope.object.modifiers.length;
-      var padding = (2 > (3+modifiers*3-text)/2) ? 2 : (3+modifiers*3-text)/2;
-      return 'padding: 0 ' + padding + 'em;';
-    }
-
-    scope.$watch('object.text', function () {
-      scope.style = calculatePadding();
-    });
-    scope.$watch('object.modifiers.length', function () {
-      scope.style = calculatePadding();
-    });
-    scope.addModifier = function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      scope.object.modifiers.push({text: 'modifier'});
-      scope.dropdown = false;
-    }
-    scope.openDropdown = function (e) {
-      e.stopPropagation();
-      e.preventDefault();
-      scope.dropdown = true;
-    }
-    scope.closeDropdown = function () {
-      scope.$apply(function() {
-        scope.dropdown = false;
-      })
-    }
-    scope.editText = function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      iElement.find('text').eq(0).attr('contenteditable', true).focus();
-      scope.dropdown = false;
-    }
-  };
+   };
 
   return {
     restrict: 'E',
-    link: render,
-    scope: {
-      object: '='
-    }
+    link: render
   };
 });
 
@@ -173,9 +131,86 @@ app.directive('modifier', function () {
   };
 });
 
+app.directive('hasModifiers', function () {
+  var render = function (scope, iElement, iAttrs) {
+    scope.addModifier = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      scope.line.modifiers.push({text: 'modifier'});
+      scope.dropdown = false;
+    };
+
+    scope.$watch('line.text', function () {
+      var modifiers = (scope.line.modifiers !== undefined) ? scope.line.modifiers : [];
+      scope.style = calculatePadding(scope.line.text, modifiers);
+    });
+    scope.$watch('line.modifiers.length', function () {
+      var modifiers = (scope.line.modifiers !== undefined) ? scope.line.modifiers : [];
+      scope.style = calculatePadding(scope.line.text, modifiers);
+    });
+  };
+
+  return {
+    restrict: 'A',
+    link: render
+  };
+});
+
+app.directive('hasDropdown', function () {
+  var render = function (scope, iElement, iAttrs) {
+    scope.dropdown = false;
+
+    var clicks = 0;
+    iElement.click(function (e) {
+      // Restrict to the immediate text element
+      if(e.target != iElement.find('text').eq(0)[0]) {
+        return;
+      }
+
+      e.stopPropagation();
+      e.preventDefault();
+
+      // Exclude double clicks and clicks when editing
+      clicks++;
+      if(clicks == 1) {
+        setTimeout(function() {
+          if(clicks == 1 && !e.target.isContentEditable) {
+            scope.$apply(function() {
+              scope.dropdown = true;
+            });
+          }
+          clicks = 0;
+        }, 300);
+      }
+    });
+
+    scope.closeDropdown = function () {
+      scope.$apply(function() {
+        scope.dropdown = false;
+      });
+    };
+
+    scope.editText = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      iElement.find('text').eq(0).attr('contenteditable', true).focus();
+      scope.dropdown = false;
+    };
+
+  };
+
+  return {
+    restrict: 'A',
+    link: render
+  };
+});
+
+
 // Close all dropdown menus
 $(function() {
   $('body').click(function () {
-    $('.dropdown-menu').scope().closeDropdown();
+    $('.dropdown-menu').each(function () {
+      $(this).scope().$parent.closeDropdown();
+    });
   });
 });

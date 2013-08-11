@@ -1,54 +1,66 @@
-<script type="text/ng-template"  id="tree_item_renderer.html">
-    {{data.name}}
-    <button ng-click="add(data)">Add node</button>
-    <button ng-click="delete(data)" ng-show="data.nodes.length > 0">Delete nodes</button>
-    <ul>
-        <li ng-repeat="data in data.nodes" ng-include="'tree_item_renderer.html'"></li>
-    </ul>
-</script>
-
 <script type="text/ng-template"  id="sentences.html">
-  <sentence ng-repeat="sentence in sentences" sentence="sentence" ng-include="'sentence.html'"></sentence>
+  <sentence ng-repeat="sentence in sentences" ng-include="'sentence.html'"></sentence>
 </script>
 
 <script type="text/ng-template"  id="sentence.html">
   <subjects>
-    <subject ng-repeat="subject in sentence.subjects" subject="subject" ng-include="'subject.html'"></subject>
+    <subject ng-repeat="line in sentence.subjects" ng-include="'subject.html'" has-modifiers has-dropdown></subject>
   </subjects>
   <break></break>
   <predicates>
-    <predicate ng-repeat="predicate in sentence.predicates" predicate="predicate" ng-include="'predicate.html'"></predicate>
+    <predicate ng-repeat="line in sentence.predicates" ng-include="'predicate.html'" has-modifiers has-dropdown></predicate>
   </predicates>
 </script>
 
 <script type="text/ng-template"  id="subject.html">
-  <text editable ng-model="subject.text"></text>
-</script>
-
-<script type="text/ng-template"  id="predicate.html">
-  <text editable ng-model="predicate.text"></text>
-  <div class="verb" type="{{ predicate.verb }}" ng-click="toggleVerb()">&nbsp;</div>
-  <objects>
-    <object ng-repeat="object in predicate.objects" object="object" ng-include="'object.html'"></object>
-  </objects>
-</script>
-
-<script type="text/ng-template"  id="object.html">
-  <text editable ng-model="object.text" style={{style}} ng-snglclick="openDropdown($event)"></text>
+  <text editable ng-model="line.text" style={{style}}></text>
   <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" ng-show="dropdown">
     <li><a tabindex="-1" href="#" ng-click="addModifier($event)">Add modifier</a></li>
     <li class="divider"></li>
     <li><a tabindex="-1" href="#" ng-click="editText($event)">Edit text (Dbl click)</a></li>
   </ul>
-  <modifiers ng-if="object.modifiers">
-    <modifier ng-repeat="modifier in object.modifiers" modifier="modifier" ng-include="'modifier.html'"></modifier>
+  <modifiers ng-if="line.modifiers">
+    <modifier ng-repeat="modifier in line.modifiers" modifier="modifier" ng-include="'modifier.html'" has-dropdown></modifier>
+  </modifiers>
+</script>
+
+<script type="text/ng-template"  id="predicate.html">
+  <text editable ng-model="line.text" style={{style}}></text>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" ng-show="dropdown">
+    <li><a tabindex="-1" href="#" ng-click="addModifier($event)">Add modifier</a></li>
+    <li class="divider"></li>
+    <li><a tabindex="-1" href="#" ng-click="editText($event)">Edit text (Dbl click)</a></li>
+  </ul>
+  <modifiers ng-if="line.modifiers">
+    <modifier ng-repeat="modifier in line.modifiers" modifier="modifier" ng-include="'modifier.html'" has-dropdown></modifier>
+  </modifiers>
+  <div class="verb" type="{{ line.verb }}" ng-click="toggleVerb()">&nbsp;</div>
+  <objects>
+    <object ng-repeat="line in line.objects" ng-include="'object.html'" has-modifiers has-dropdown></object>
+  </objects>
+</script>
+
+<script type="text/ng-template"  id="object.html">
+  <text editable ng-model="line.text" style={{style}} ng-snglclick="openDropdown($event)"></text>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" ng-show="dropdown">
+    <li><a tabindex="-1" href="#" ng-click="addModifier($event)">Add modifier</a></li>
+    <li class="divider"></li>
+    <li><a tabindex="-1" href="#" ng-click="editText($event)">Edit text (Dbl click)</a></li>
+  </ul>
+  <modifiers ng-if="line.modifiers">
+    <modifier ng-repeat="modifier in line.modifiers" modifier="modifier" ng-include="'modifier.html'" has-dropdown></modifier>
   </modifiers>
 </script>
 
 
 <script type="text/ng-template"  id="modifier.html">
   <text editable ng-model="modifier.text" style="{{style}}"></text>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" ng-show="dropdown">
+    <li class="disabled"><a tabindex="-1" href="#" ng-click="removeModifier($event, $index)">Remove modifier</a></li>
+    <li class="divider"></li>
+    <li><a tabindex="-1" href="#" ng-click="editText($event)">Edit text (Dbl click)</a></li>
+  </ul>
   <modifiers ng-if="modifier.modifiers">
-    <modifier ng-repeat="modifier in modifier.modifiers" modifier="modifier" ng-include="'modifier.html'"></modifier>
+    <modifier ng-repeat="modifier in modifier.modifiers" modifier="modifier" ng-include="'modifier.html'" has-dropdown></modifier>
   </modifiers>
 </script>
