@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>My HTML File</title>
+  <link rel="stylesheet" href="lib/bootstrap.css"/>
+  <link rel="stylesheet/less" type="text/css" href="css/app.less"/>
+  <script src="lib/less-1.4.1.min.js"></script>
+  <script src="lib/jquery-2.0.3.js"></script>
+  <script src="lib/angular.js"></script>
+  <script src="js/contenteditable.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/controllers.js"></script>
+</head>
+<body ng-controller="DiatenceCtrl">
+<div id="wrap">
+  <div class="navbar navbar-fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Diatence</a>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Link</a></li>
+        <li><a href="#">Link</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container">
+    <label for="sentence">The sentence to diagram</label><br/>
+    <textarea id="sentence" ng-model="sentence"></textarea>
+    <p>{{ sentence }}</p>
+    <diagram sentences="diagram.sentences"></diagram><br/><br/>
+    <diagram sentences="diagram.sentences"></diagram><br/><br/>
+  </div>
+</div>
+<div id="footer">
+  <div class="container">
+    <p class="text-muted credit">Created by Leo Lutz</p>
+  </div>
+</div>
+</body>
+</html>

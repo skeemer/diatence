@@ -1,0 +1,93 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by its height */
+  margin: 0 auto -60px;
+  /* Pad bottom by footer height */
+  padding: 0 0 60px;
+}
+
+/* Set the fixed height of the footer here */
+#footer {
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+  #footer {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+#wrap > .container {
+  padding: 60px 15px 0;
+}
+.container .credit {
+  margin: 20px 0;
+}
+
+#sentence {
+  width: 100%;
+}
+
+diagram {
+  font-family: courier;
+
+  text {
+    display: inline-block;
+    padding: 0 2em;
+    border-bottom: 2px solid black;
+
+    &:hover {
+      color: blue;
+    }
+  }
+
+  .verb {
+    display: inline-block;
+    position: relative;
+    margin-left: -2px;
+    border-left: 2px solid black;
+    width: 0;
+
+    &[type="linking"] {
+      -webkit-transform: rotate(-45deg);
+      height: 2em;
+      bottom: 3px;
+    }
+
+    &:hover {
+      border-left-color: blue;
+      cursor: pointer;
+    }
+  }
+
+  break {
+    display: inline-block;
+    position: relative;
+    height: 3.25em;
+    bottom: -2em;
+    border-left: 2px solid black;
+  }
+}
